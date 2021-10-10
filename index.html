@@ -59,7 +59,7 @@
 					var currentTimeInSeconds = Math.round(currentTime/1000);
 					var currentTimeSecond = currentTimeInSeconds % 60;
 					var currentTimeMinutes = Math.floor(currentTimeInSeconds/60);
-					var currentString = currentTimeMinutes + ':' + currentTimeSecond;
+					var currentString = currentTimeMinutes + ':' + (currentTimeSecond < 10 ? '0' : '') + currentTimeSecond;
 					timerDiv.innerText = currentString;
 				}, 1000);
 			})();

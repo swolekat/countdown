@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Countdown!</title>
+		<link rel="apple-touch-icon" sizes="76x76" href="/favicons/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+		<link rel="manifest" href="/favicons/site.webmanifest">
+		<link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5bbad5">
+		<link rel="shortcut icon" href="/favicons/favicon.ico">
+		<meta name="msapplication-TileColor" content="#b91d47">
+		<meta name="msapplication-config" content="/favicons/browserconfig.xml">
+		<meta name="theme-color" content="#ffffff">
+	</head>
+	<body>
+		<div class="countdown-timer" id="countdown-timer">
+
+		</div>
+		<style>
+				html, body {
+						height: 100%;
+						width: 100%;
+						margin: 0;
+						padding: 0;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+				}
+			.countdown-timer {
+					font-size: 24px;
+					color: #f00;
+					font-family: "Trebuchet MS", sans-serif;
+			}
+		</style>
+		<script>
+			(function(){
+
+				function getUrlParameter(name) {
+					name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+					var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+					var results = regex.exec(location.search);
+					return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+				};
+
+				var urlParams = new URLSearchParams(window.location.search);
+				var minutes = Number.parseInt(getUrlParameter('m'), 10) || 20;
+				var initialTime = new Date();
+				var endTime = new Date(initialTime.getTime() + (1000 * 60 * minutes));
+
+				var timerDiv = document.getElementById('countdown-timer');
+				var timerInterval = setInterval(function(){
+					var currentTime = endTime - new Date();
+					if(currentTime < 0){
+						timerDiv.innerText = 'Done!';
+						clearInterval(timerInterval);
+					}
+					var currentTimeInSeconds = Math.round(currentTime/1000);
+					var currentTimeSecond = currentTimeInSeconds % 60;
+					var currentTimeMinutes = Math.floor(currentTimeInSeconds/60);
+					var currentString = currentTimeMinutes + ':' + currentTimeSecond;
+					timerDiv.innerText = currentString;
+				}, 1000);
+			})();
+		</script>
+	</body>
+</html>

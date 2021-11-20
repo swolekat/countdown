@@ -42,9 +42,8 @@
 					var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
 					var results = regex.exec(location.search);
 					return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-				};
+				}
 
-				var urlParams = new URLSearchParams(window.location.search);
 				var minutes = Number.parseInt(getUrlParameter('m'), 10) || 20;
 				var initialTime = new Date();
 				var endTime = new Date(initialTime.getTime() + (1000 * 60 * minutes));
@@ -52,14 +51,22 @@
 				var timerDiv = document.getElementById('countdown-timer');
 				var timerInterval = setInterval(function(){
 					var currentTime = endTime - new Date();
-					if(currentTime < 0){
+					if(currentTime <= 0){
 						timerDiv.innerText = 'Done!';
+						var audio = new Audio('./timeIsUp.mp3');
+						audio.play();
 						clearInterval(timerInterval);
+						return;
 					}
 					var currentTimeInSeconds = Math.round(currentTime/1000);
 					var currentTimeSecond = currentTimeInSeconds % 60;
 					var currentTimeMinutes = Math.floor(currentTimeInSeconds/60);
+					var currentTimeInHours = Math.floor(currentTimeMinutes/60);
 					var currentString = currentTimeMinutes + ':' + (currentTimeSecond < 10 ? '0' : '') + currentTimeSecond;
+					if(currentTimeInHours > 0){
+						var currentMinutesWithoutHours = currentTimeMinutes % 60;
+						currentString = currentTimeInHours + ':' + (currentMinutesWithoutHours < 10 ? '0' : '') + currentMinutesWithoutHours + ':' + (currentTimeSecond < 10 ? '0' : '') + currentTimeSecond;
+					}
 					timerDiv.innerText = currentString;
 				}, 1000);
 			})();
